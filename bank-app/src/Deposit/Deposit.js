@@ -3,6 +3,11 @@ import { useState } from 'react'
 function Deposit({ token }) {
   const [amount, setAmount] = useState('')
 
+  const movement = {
+    amount: Number(amount),
+    date: new Date().toISOString(), // Asegúrate de formatear correctamente la fecha
+  }
+
   const handleAmountChange = (event) => {
     setAmount(event.target.value)
   }
@@ -10,7 +15,7 @@ function Deposit({ token }) {
   const handleDeposit = (event) => {
     event.preventDefault() // Prevents the form from submitting and refreshing the page
 
-    const url = `http://localhost:3000/movements?token=${token}`
+    const url = `http://localhost:4000/movements?token=${token}`
 
     fetch(url, {
       method: 'POST',
@@ -18,13 +23,7 @@ function Deposit({ token }) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        movement: {
-          // Aquí envolvemos el objeto de movimiento dentro de una propiedad 'movement'
-          amount: Number(amount),
-          date: new Date(),
-        },
-      }),
+      body: JSON.stringify({ movement }),
     })
       .then((response) => {
         if (!response.ok) {
