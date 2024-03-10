@@ -21,7 +21,7 @@ function App() {
     const fetchUserData = () => {
       if (!token) return // No hay token, no se puede obtener datos
 
-      fetch('http://localhost:4000/user?token=' + token)
+      fetch('http://localhost:3000/user?token=' + token)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok')
@@ -54,7 +54,7 @@ function App() {
   }, [token]) // Se ejecuta solo cuando cambia el token
 
   const handleLogin = (user, pin) => {
-    const url = `http://localhost:4000/login?username=${user}&pin=${pin}`
+    const url = `http://localhost:3000/login?username=${user}&pin=${pin}`
 
     fetch(url)
       .then((response) => {
@@ -81,19 +81,15 @@ function App() {
       </nav>
       {user && (
         <main className="app">
-          <AccountData account={account} />
           <Balance movements={movements} />
           <Movements movements={movements} />
           <Summary movements={movements} />
 
           <Transfer token={token} />
           <Deposit token={token} />
-
           <Logout token={token} />
 
-          <p className="logout-timer">
-            You will be logged out in <span className="timer">05:00</span>
-          </p>
+          <AccountData account={account} />
         </main>
       )}
     </>
